@@ -25,7 +25,7 @@ cd gamelist-tools
 ## Usage
 Run the script with the following options:
 ```sh
-./generate_gamelist.sh --output-file <output_file> --images-folder <images_folder> <directory>
+./gamelist_generator.sh --output-file <output_file> --images-folder <images_folder> <directory>
 ```
 
 ### Options:
@@ -35,7 +35,7 @@ Run the script with the following options:
 
 ### Example:
 ```sh
-./generate_gamelist.sh -o my_gamelist.xml -i images_folder roms
+./gamelist_generator.sh -o my_gamelist.xml -i images_folder roms
 ```
 This generates `my_gamelist.xml`, using ZIP files from the `roms` directory and matching images from `images_folder`.
 
