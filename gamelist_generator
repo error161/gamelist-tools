@@ -1,0 +1,98 @@
+#!/bin/bash
+
+# Default values
+gamelist="gamelist.xml"
+game_dir=""
+images_dir=""
+
+# Function to display usage
+usage() {
+    echo "Usage: $0 --output-file <output_file> --images-folder <images_folder> <directory>"
+    echo "  -o, --output-file    Specify output XML file (default: gamelist.xml)"
+    echo "  -i, --images-folder  Specify folder containing game images"
+    echo "  <directory>          Directory containing game ZIP files"
+    exit 1
+}
+
+# Parse command-line arguments
+while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+        -o|--output-file)
+            gamelist="$2"
+            shift 2
+            ;;
+        -i|--images-folder)
+            images_dir="$2"
+            shift 2
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            if [[ -z "$game_dir" ]]; then
+                game_dir="$1"
+            else
+                usage
+            fi
+            shift
+            ;;
+    esac
+done
+
+# Validate required arguments
+if [[ -z "$game_dir" ]]; then
+    echo "Error: Directory containing ZIP files is required."
+    usage
+fi
+
+if [[ ! -d "$game_dir" ]]; then
+    echo "Error: Directory '$game_dir' does not exist."
+    exit 1
+fi
+
+# Start the XML structure
+echo '<?xml version="1.0"?>' > "$gamelist"
+echo '<gameList>' >> "$gamelist"
+
+# Iterate over all .zip files in the specified directory
+for file in "$game_dir"/*.zip; do
+    # Skip if no zip files exist
+    [[ -e "$file" ]] || continue
+    
+    # Extract game name from file name (remove path and extension)
+    game_name="${file##*/}"
+    game_name="${game_name%.zip}"
+    image_path=""
+
+    # Check if images folder is provided and contains a matching image
+    if [[ -n "$images_dir" && -d "$images_dir" ]]; then
+        for ext in png jpg jpeg; do
+            if [[ -f "$images_dir/$game_name.$ext" ]]; then
+                image_path="$images_dir/$game_name.$ext"
+                break
+            fi
+        done
+    fi
+
+    # If no matching image is found, set a default placeholder
+    if [[ -z "$image_path" ]]; then
+        image_path="$images_dir/$game_name.png"
+    fi
+
+    # Generate a fake last played timestamp (YYYYMMDDTHHMMSS format)
+    last_played=$(date "+%Y%m%dT%H%M%S")
+    
+    # Write game entry
+    echo -e "\t<game>" >> "$gamelist"
+    echo -e "\t\t<path>./${file##*/}</path>" >> "$gamelist"
+    echo -e "\t\t<name>$game_name</name>" >> "$gamelist"
+    echo -e "\t\t<image>$image_path</image>" >> "$gamelist"
+    echo -e "\t\t<playcount>1</playcount>" >> "$gamelist"
+    echo -e "\t\t<lastplayed>$last_played</lastplayed>" >> "$gamelist"
+    echo -e "\t</game>" >> "$gamelist"
+done
+
+# Close the XML structure
+echo '</gameList>' >> "$gamelist"
+
+echo "Generated $gamelist successfully!"
