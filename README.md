@@ -2,6 +2,10 @@
 
 A collection of tools to manage and generate gamelist XML files for retro gaming frontends.
 
+# Fork?
+
+Forked/modified from https://github.com/dariocast/gamelist-tools in case I want to potentially work on other updates/changes in the future.
+
 ## Introduction
 
 Managing emulation ROMs involves not only organizing game files but also enhancing the gaming experience by associating them with visual assets like box art, covers, and screenshots. This enrichment process, known as "scraping," entails collecting metadata and media from various databases to provide detailed information and visuals for each game. Tools like [Skraper](https://skraper.net) facilitate this process by automating the retrieval and association of such data, ensuring a comprehensive and visually appealing game library but the support for UNIX system is still limited.
