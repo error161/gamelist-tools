@@ -19,7 +19,7 @@ The GameList Tools aims to streamline the organization and customization of your
 ## Installation
 Clone the repository:
 ```sh
-git clone https://github.com/yourusername/gamelist-tools.git
+git clone https://github.com/error161/gamelist-tools.git
 cd gamelist-tools
 ```
 
