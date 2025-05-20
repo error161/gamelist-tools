@@ -2,15 +2,17 @@
 
 # Default values
 gamelist="gamelist.xml"
+romext="zip"
 game_dir=""
 images_dir=""
 
 # Function to display usage
 usage() {
-    echo "Usage: $0 --output-file <output_file> --images-folder <images_folder> <directory>"
+    echo "Usage: $0 --output-file <output_file> --images-folder <images_folder> --rom-extension <extension> <directory>"
     echo "  -o, --output-file    Specify output XML file (default: gamelist.xml)"
     echo "  -i, --images-folder  Specify folder containing game images"
-    echo "  <directory>          Directory containing game ZIP files"
+    echo "  -x  --rom-extension  Specify rom file extension without period (default: zip)"
+    echo "  <directory>          Directory containing game files"
     exit 1
 }
 
@@ -23,6 +25,10 @@ while [[ "$#" -gt 0 ]]; do
             ;;
         -i|--images-folder)
             images_dir="$2"
+            shift 2
+            ;;
+        -x|--rom-extension)
+            romext="$2"
             shift 2
             ;;
         -h|--help)
@@ -41,7 +47,7 @@ done
 
 # Validate required arguments
 if [[ -z "$game_dir" ]]; then
-    echo "Error: Directory containing ZIP files is required."
+    echo "Error: Directory containing game files is required."
     usage
 fi
 
@@ -54,14 +60,14 @@ fi
 echo '<?xml version="1.0"?>' > "$gamelist"
 echo '<gameList>' >> "$gamelist"
 
-# Iterate over all .zip files in the specified directory
-for file in "$game_dir"/*.zip; do
-    # Skip if no zip files exist
+# Iterate over all rom files in the specified directory
+for file in "$game_dir"/*."$romext"; do
+    # Skip if no rom files exist
     [[ -e "$file" ]] || continue
     
     # Extract game name from file name (remove path and extension)
     game_name="${file##*/}"
-    game_name="${game_name%.zip}"
+    game_name="${game_name%.$romext}"
     image_path=""
 
     # Check if images folder is provided and contains a matching image
