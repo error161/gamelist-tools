@@ -10,10 +10,11 @@ The Gamelist Tools project aims to bridge this gap by providing a set of scripts
 The GameList Tools aims to streamline the organization and customization of your game library by providing tools that help generate and manage gamelist files, making it easier to integrate ROMs and their associated media into your favorite emulation frontend.
 
 ## Features
-- **Gamelist Generator**: A Bash script to create an XML gamelist from ZIP files in a specified directory.
+- **Gamelist Generator**: A Bash script to create an XML gamelist from game files in a specified directory.
 - Automatically extracts game names from filenames.
 - Matches games with corresponding images in a given folder.
 - Supports custom output file paths.
+- Supports custom game file extensions
 
 ## Installation
 Clone the repository:
@@ -25,24 +26,21 @@ cd gamelist-tools
 ## Usage
 Run the script with the following options:
 ```sh
-./gamelist_generator --output-file <output_file> --images-folder <images_folder> <directory>
+./gamelist_generator --output-file <output_file> --images-folder <images_folder> --rom-extension <extension> <directory>
 ```
 
 ### Options:
 - `-o, --output-file` → Specify the output XML file (default: `gamelist.xml`)
 - `-i, --images-folder` → Specify the folder containing game images
-- `<directory>` → The directory containing game ZIP files
+- `-x, --rom-extension` → Specify the game file extension without the period (default: zip)
+- `<directory>` → The directory containing game files
 
 ### Example:
 ```sh
-./gamelist_generator -o my_gamelist.xml -i images_folder roms
+./gamelist_generator -o my_gamelist.xml -i images_folder -x smc roms
 ```
 This generates `my_gamelist.xml`, using ZIP files from the `roms` directory and matching images from `images_folder`.
 
-## Roadmap
-- Additional tools for gamelist management
-- Support for more metadata extraction
-- GUI or interactive mode
 
 ## License
 This project is licensed under the MIT License.
