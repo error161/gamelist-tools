@@ -43,7 +43,7 @@ Run the script with the following options:
 ```sh
 ./gamelist_generator -o my_gamelist.xml -i images_folder -x smc roms
 ```
-This generates `my_gamelist.xml`, using ZIP files from the `roms` directory and matching images from `images_folder`.
+This generates `my_gamelist.xml`, using game files from the `roms` directory and matching images from `images_folder`.
 
 
 ## License
